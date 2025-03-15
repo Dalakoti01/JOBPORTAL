@@ -8,10 +8,11 @@ import userRouter from "./routes/user.route.js"
 import companyRouter from "./routes/company.routes.js"
 import jobRouter from "./routes/job.routes.js"
 import applicationRouter from "./routes/application.routes.js"
+import path, { join } from "path"
 
 const app = express()
 
-
+const __dirname = path.resolve()
 // http://localhost:8000/api/vi/user/
 
 //MIDLEWARE
@@ -30,6 +31,11 @@ app.use("/api/v1/user",userRouter)
 app.use("/api/v1/company",companyRouter)
 app.use("/api/v1/job",jobRouter)
 app.use("/api/v1/application",applicationRouter)
+
+app.use(express.static(path.join(__dirname,"frontend/dist")))
+app.get("*",(req,res) => {
+    res.sendFile(path.resolve(__dirname,"frontend","dist","index.html"))
+})
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT,()=>{
